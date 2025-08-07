@@ -1,0 +1,31 @@
+name: Deploy MkDocs Site
+
+on:
+  push:
+    branches:
+      - main  # change if your default branch is different
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Enter Nix shell and build site
+        run: |
+          nix-shell --run "
+            pip install mkdocs-material mkdocs-roamlinks-plugin
+            mkdocs build
+          "
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
