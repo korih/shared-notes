@@ -11,3 +11,5 @@ nixpkgs.mkShell {
     pip
   ];
 }
+
+# nix-shell -p python3Packages.mkdocs python3Packages.mkdocs-material
