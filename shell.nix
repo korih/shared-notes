@@ -1,11 +1,13 @@
-{ pkgs ? import <nixpkgs> {} }:
-
-pkgs.mkShell {
-  buildInputs = with pkgs.python3Packages; [
+let
+  nixpkgs = import (fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/nixos-24.05.tar.gz";
+  }) {};
+in
+nixpkgs.mkShell {
+  buildInputs = with nixpkgs.python3Packages; [
     mkdocs
     mkdocs-material
-    mkdocs-roamlinks-plugin  # if using Obsidian [[wikilinks]]
+    mkdocs-roamlinks-plugin  # or others as needed
     pip
   ];
 }
-
