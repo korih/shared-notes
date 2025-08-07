@@ -1,0 +1,20 @@
+site_name: Kori's Shared Notes
+site_url: http://www.blog.korih.com
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: custom
+    accent: amber
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - tables
+  - admonition
+  - codehilite
+  - footnotes
+  - pymdownx.arithmatex
+  - pymdownx.superfences
+  - pymdownx.details
