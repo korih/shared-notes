@@ -18,7 +18,7 @@ jobs:
 
       - name: Enter Nix shell
         run: |
-          nix-shell -p python3Packages.mkdocs python3Packages.mkdocs-material python3Packages.mkdocs-roamlinks-plugin --run "mkdocs build"
+          nix-shell -p python3Packages.mkdocs python3Packages.mkdocs-material --run "mkdocs build"
 
 
       - name: Deploy to GitHub Pages
