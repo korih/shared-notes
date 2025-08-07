@@ -1,29 +1,29 @@
-name: Deploy MkDocs Site
-
+name: ci 
 on:
   push:
     branches:
-      - main  # change if your default branch is different
-
+      - master 
+      - main
+permissions:
+  contents: write
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v25
-
-      - name: Enter Nix shell
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
         run: |
-          nix-shell -p python3Packages.mkdocs python3Packages.mkdocs-material --run "mkdocs build"
-
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - uses: actions/setup-python@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          publish_branch: gh-pages
+          python-version: 3.x
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: ~/.cache 
+          restore-keys: |
+            mkdocs-material-
+      - run: pip install mkdocs-material 
+      - run: mkdocs gh-deploy --force
